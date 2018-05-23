@@ -316,7 +316,7 @@ int main()
 		HKernel << <gridSize, blockSize >> > (er, ew, ej, hr, hw, hj, da, db, rb, wb, jb, dr, dw, dj);
 
 		cudaDeviceSynchronize();
-		//此处不加会在840m上有输出问题，但1080ti上没有
+		//此处不加会在840m上有输出问题，但1080ti上没
 		if (nowTime>lastTime)
 		{
 
