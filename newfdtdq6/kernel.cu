@@ -26,7 +26,7 @@ using namespace std;
 #define FREQUENCY 50.0
 //计算频率（Hz）
 
-#define knee 
+#define knee
 //电导率为knee模型
 
 //物理常量//可直接使用。
@@ -270,7 +270,7 @@ int main()
 	{
 		sigma[i] = pow(10, sigma_avg[i]);
 	}
-#else 
+#else
 	for (int i = 0; i < 100; i++)
 	{
 		sigma[i] = 0;
@@ -314,11 +314,12 @@ int main()
 		//cudaDeviceSynchronize();
 
 		HKernel << <gridSize, blockSize >> > (er, ew, ej, hr, hw, hj, da, db, rb, wb, jb, dr, dw, dj);
-		
+
 		cudaDeviceSynchronize();
+		//此处不加会在840m上有输出问题，但1080ti上没有
 		if (nowTime>lastTime)
 		{
-			
+
 			//仿真时间模拟已经进行：
 			system("cls");
 			//time(&nowTime);
