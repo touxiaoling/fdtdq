@@ -26,7 +26,7 @@ using namespace std;
 #define FREQUENCY 50.0
 //计算频率（Hz）
 
-#define knee
+#define e
 //电导率为knee模型
 
 //物理常量//可直接使用。
