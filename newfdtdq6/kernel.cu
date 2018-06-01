@@ -26,8 +26,8 @@ using namespace std;
 #define FREQUENCY 50.0
 //计算频率（Hz）
 
-#define AVG 1231123
-//电导率为knee模型
+#define NOTHING 1231123
+//电导率可选参数 KNEE AVG NOTHING
 
 //物理常量//可直接使用。
 #define EARTH_RD 6370.0e3
@@ -215,7 +215,7 @@ int main()
 		-5.756798, -5.662242, -5.584637, -5.486151, -5.405922, -5.287574, -5.194666, -5.050842, -4.941185, -4.766291,
 		-4.641053, -4.433463, -4.293188, -4.043739, -3.886141, -3.576347, -3.397373, -3.013649, -2.813157, -2.613600
 	};
-#else 
+#else
 	string filesite = ".";
 #endif
 	string filename = "/matlab";
@@ -265,7 +265,7 @@ int main()
 		sigma[h] = 5.6e-10*exp((h*1e3 - 45e3) / 2.9e3) + 5.6e-10*exp((h*1e3 - 45e3) / 8.3e3);
 
 	}
-#elif AVG 
+#elif AVG
 	for (int i = 0; i < 100; i++)
 	{
 		sigma[i] = pow(10, sigma_avg[i]);
