@@ -216,7 +216,7 @@ int main()
 		-4.641053, -4.433463, -4.293188, -4.043739, -3.886141, -3.576347, -3.397373, -3.013649, -2.813157, -2.613600
 	};
 #else
-	string filesite = ".";
+	string filesite = "./nothing";
 #endif
 	string filename = "/matlab";
 	string fileform = ".txt";
