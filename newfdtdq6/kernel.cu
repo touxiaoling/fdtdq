@@ -298,8 +298,8 @@ int main()
 	int usesec, allusesec, usedsec;
 	for (iteration = 0; iteration < maximumIteration; iteration++)
 	{
-		currentSimulatedTime = dt*(double)iteration;
-		time(&nowTime);
+		
+		
 
 		EKernel1 << <gridSize, blockSize >> > (hj, rb, wb, jb, sumnum);
 		//cudaDeviceSynchronize();
@@ -315,11 +315,12 @@ int main()
 
 		HKernel << <gridSize, blockSize >> > (er, ew, ej, hr, hw, hj, da, db, rb, wb, jb, dr, dw, dj);
 
-		cudaDeviceSynchronize();
+		//cudaDeviceSynchronize();
 		//此处不加会在840m上有输出问题，但1080ti上没
+		time(&nowTime);
 		if (nowTime>lastTime)
 		{
-
+			currentSimulatedTime = dt*(double)iteration;
 			//仿真时间模拟已经进行：
 			system("cls");
 			//time(&nowTime);
