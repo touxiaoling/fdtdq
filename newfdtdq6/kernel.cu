@@ -298,8 +298,8 @@ int main()
 	int usesec, allusesec, usedsec;
 	for (iteration = 0; iteration < maximumIteration; iteration++)
 	{
-		
-		
+
+
 
 		EKernel1 << <gridSize, blockSize >> > (hj, rb, wb, jb, sumnum);
 		//cudaDeviceSynchronize();
@@ -316,7 +316,7 @@ int main()
 		HKernel << <gridSize, blockSize >> > (er, ew, ej, hr, hw, hj, da, db, rb, wb, jb, dr, dw, dj);
 
 		//cudaDeviceSynchronize();
-		//此处不加会在840m上有输出问题，但1080ti上没
+		//此处不加会在840m上有输出问题，但1080ti上没有
 		time(&nowTime);
 		if (nowTime>lastTime)
 		{
