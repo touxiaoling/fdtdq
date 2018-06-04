@@ -26,8 +26,8 @@ using namespace std;
 #define FREQUENCY 50.0
 //计算频率（Hz）
 
-#define knee
-//电导率为knee模型
+#define NOTHING 1231123
+//电导率可选参数 KNEE AVG NOTHING
 
 //物理常量//可直接使用。
 #define EARTH_RD 6370.0e3
@@ -200,9 +200,9 @@ int main()
 	float *hr, *hw, *hj;
 	float *sumnum;
 	float sigma[100];
-#ifdef knee
+#ifdef KNEE
 	string filesite = "./knee";
-#elif avg
+#elif AVG
 	string filesite = "./avg";
 	float sigma_avg[100] = { -13.82032, -13.66546, -13.40335, -13.17205, -12.99382, -12.84368, -12.70918, -12.58078, -12.4639, -12.34632,
 		-12.23973, -12.13118, -12.03225, -11.93083, -11.83736, -11.74204, -11.65429, -11.5665,0 - 11.48464, -11.40081,
@@ -216,7 +216,7 @@ int main()
 		-4.641053, -4.433463, -4.293188, -4.043739, -3.886141, -3.576347, -3.397373, -3.013649, -2.813157, -2.613600
 	};
 #else
-	string filesite = ".";
+	string filesite = "./nothing";
 #endif
 	string filename = "/matlab";
 	string fileform = ".txt";
@@ -259,13 +259,13 @@ int main()
 		sumnum[i] = 0;
 	}
 	//knee
-#ifdef knee
+#ifdef KNEE
 	for (int h = 0; h < 100; h++)
 	{
 		sigma[h] = 5.6e-10*exp((h*1e3 - 45e3) / 2.9e3) + 5.6e-10*exp((h*1e3 - 45e3) / 8.3e3);
 
 	}
-#elif avg
+#elif AVG
 	for (int i = 0; i < 100; i++)
 	{
 		sigma[i] = pow(10, sigma_avg[i]);
@@ -298,8 +298,8 @@ int main()
 	int usesec, allusesec, usedsec;
 	for (iteration = 0; iteration < maximumIteration; iteration++)
 	{
-		currentSimulatedTime = dt*(double)iteration;
-		time(&nowTime);
+		
+		
 
 		EKernel1 << <gridSize, blockSize >> > (hj, rb, wb, jb, sumnum);
 		//cudaDeviceSynchronize();
@@ -315,11 +315,12 @@ int main()
 
 		HKernel << <gridSize, blockSize >> > (er, ew, ej, hr, hw, hj, da, db, rb, wb, jb, dr, dw, dj);
 
-		cudaDeviceSynchronize();
+		//cudaDeviceSynchronize();
 		//此处不加会在840m上有输出问题，但1080ti上没
+		time(&nowTime);
 		if (nowTime>lastTime)
 		{
-
+			currentSimulatedTime = dt*(double)iteration;
 			//仿真时间模拟已经进行：
 			system("cls");
 			//time(&nowTime);
