@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "other.h"
-
+#include <fstream>
+#include <string>
 using namespace std;
 
 
@@ -16,11 +17,12 @@ int main()
 	//元胞尺寸（m）
 	const double dt = dr / (2 * LIGHT_SPEED);
 	//时间差(s)
+	const int samplingPoint = LIGHT_SPEED / (5 * FREQUENCY * dr);
 	double fs = 1.0 / dt;
-	const int sr = 1, sw = we/2+1, sj = je/2+1;
-	const int or = 1, ow = sw/2+1, oj = sj/2+1-10;
-	
-	
+	const int sr = 0, sw = we / 2, sj = je / 2;
+	const int on = 5;
+	const int or [] = {2}, ow[] = {sw / 2, sw / 2, sw / 2, sw / 2, sw / 2}, oj[] = {sj / 2 + 10, sj / 2 + 20, sj / 2 + 30, sj / 2 + 40, sj / 2 + 50};
+
 	//观察点
 	const double totalSimulatedTime = TOTALSIMULATERTIME;
 	const int maximumIteration = (int)(totalSimulatedTime / dt)+1;
@@ -93,74 +95,67 @@ int main()
 	cout<<"start for ENTER"<<endl;
 	//cin.get();
 	/////////////////////////////////////////////////////////////////////////////
-	//打开并开始编写.txt文件
-	//如果需要的话，这个文件将会很方便地将参数提供给matlab
-	while (fopen_s(&FilePointer, "matlaber.txt", "w"))
+	string filesite = "./nothing";
+	string filename = "/matlab";
+	string fileform = ".txt";
+	ofstream FileStream[on];
+	//指向txt文件的指针
+	for (int rr = 0; rr < on; rr++)
 	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
+		FileStream[rr].open(filesite + filename + to_string(rr) + fileform);
 	}
-	while (fopen_s(&FilePointew, "matlabew.txt", "w"))
-	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
-	}
-	while (fopen_s(&FilePointej, "matlabej.txt", "w"))
-	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
-	}
-	while (fopen_s(&FilePointhr, "matlabhr.txt", "w"))
-	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
-	}
-	while (fopen_s(&FilePointhw, "matlabhw.txt", "w"))
-	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
-	}
-	while (fopen_s(&FilePointhj, "matlabhj.txt", "w"))
-	{
-		fprintf(stderr, "Can't opening matlab.txt");
-		perror(" ");
-	}
-
 	/////////////////////////////////////////////////////////////////////////////
 	// main loop:
 	time(&startTime);
-	int lastcellnum=0,cellnum;
 	int usesec, allusesec, usedsec;
 	for (iteration = 0; iteration < maximumIteration; iteration++)
 	{// mainloop
 
-	 //循环的第一次，所有数组的数据都是零。 如果有任何东西不是零，这里就有bug。：>
-		currentSimulatedTime = dt*(double)iteration;
+		//循环的第一次，所有数组的数据都是零。 如果有任何东西不是零，这里就有bug。：>
 
-		time(&nowTime);
-		if (nowTime>lastTime)
+		//极点边界条件
+		for (i = 0; i < (re); i++)
 		{
-			//仿真时间模拟已经进行：
-			system("cls");
-			//time(&nowTime);
-			usedsec = nowTime - startTime;
-			usesec = (int)(((double)(nowTime - startTime))*(maximumIteration - iteration) / (iteration + 1));
-			allusesec = (int)(((double)(nowTime - startTime))*(maximumIteration) / (iteration + 1));
-			//打印到标准输出迭代号码和当前模拟时间：
-			cout << iteration << " / " << maximumIteration << " " << currentSimulatedTime << "sec " << endl;
-			cout << "use:" << usedsec / 3600 << "h " << (usedsec % 3600) / 60 << "m " << usedsec % 60 << "s   ";
-
-			cout << "need:  " << usesec / 3600 << "h " << (usesec % 3600) / 60 << "m " << usesec % 60 << "s   ";
-			cout << "all:  " << allusesec / 3600 << "h " << (allusesec % 3600) / 60 << "m " << allusesec % 60 << "s " << endl;
-
-			
-			cout << "speed:" << ((double)rb*wb*jb*iteration) / (nowTime - startTime)/1.0e6<<" Mceil/s";
-			lastTime = nowTime;
-
+			j = 0;
+			{
+				double sumnum = 0;
+				for (k = 1; k < jb; k++)
+				{
+					sumnum += hj[i][j][k];
+				}
+				for (k = 0; k < jb; k++)
+				{
+					er[i][j][k] = c1 * er[i][j][k] + (sin(dw / 2) * dw / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
+				}
+			}
 		}
 
-
+		for (i = 0; i < (re); i++)
+		{
+			j = we;
+			{
+				double sumnum = 0;
+				for (k = 1; k < jb; k++)
+				{
+					sumnum += hj[i][j][k];
+				}
+				for (k = 0; k < jb; k++)
+				{
+					er[i][j][k] = c1 * er[i][j][k] - (sin(dw / 2) * dw / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
+				}
+			}
+		}
 		//更新er值：
+		for (i = 0; i < (re); i++)
+		{
+			for (j = 1; j < (we); j++)
+			{
+				k = 0;
+				{
+					er[i][j][k] = c1 * er[i][j][k] + c2 / (((i1[i][j][k] + 0.5) * dr + EARTH_RD) * sin(i2[i][j][k] * dw)) * (sin((i2[i][j][k] + 0.5) * dw) * hj[i][j][k] / dw - sin((i2[i][j][k] - 0.5) * dw) * hj[i][j - 1][k] / dw - (hw[i][j][k] - hw[i][j][je-1]) / dj);
+				}
+			}
+		}
 		for (i = 0; i<(re); i++)
 		{
 			for (j = 1; j<(we); j++)
@@ -195,29 +190,14 @@ int main()
 				}
 		}
 			}
-		//极点边界条件
-		for (i = 0; i<(re); i++)
-		{
-			for (j = 0; j<wb;j+=we)
-			{
-				double sumnum = 0;
-				for (k = 1; k < jb; k++)
-				{
-					sumnum += hj[i][j][k];
-				}
-				for (k = 1; k<jb; k++)
-				{
-					er[i][j][k] = c1*er[i][j][k] + (sin(dw / 2)*dw / (2*M_PI*(1 - cos(dw / 2))*(EARTH_RD + (i1[i][j][k] + 0.5)*dr)))*c2*sumnum;
-				}
-			}
-		}
+
 		//周期边界条件
 		for (i = 0; i<rb; i++)
 		{
 			for (j = 0; j<wb; j ++)
 			{
-				er[i][j][0] = er[i][j][je];
-				ew[i][j][0] = ew[i][j][je];
+				er[i][j][je] = er[i][j][0];
+				ew[i][j][je] = ew[i][j][0];
 			}
 		}
 
@@ -256,7 +236,7 @@ int main()
 		{
 			for (j = 0; j<we; j++)
 			{
-				for (k = 1; k<je; k++)
+				for (k = 0; k<je; k++)
 				{
 
 					hj[i][j][k] = c3*hj[i][j][k] - c4 / (((i1[i][j][k] + 0.5)*dr + EARTH_RD))*(((i1[i][j][k] + 1 + EARTH_RD / dr)*ew[i+1][j][k] - (i1[i][j][k] + EARTH_RD / dr)*ew[i][j][k]) - (er[i][j+1][k] - er[i][j][k]) / dw);
@@ -268,24 +248,58 @@ int main()
 		{
 			for (j = 0; j<wb; j ++)
 			{
-				hr[i][j][je] = hr[i][j][0];
-				hw[i][j][je] = hw[i][j][0];
+				hj[i][j][je] = hr[i][j][1];
 			}
 		}
-		fprintf(FilePointer, "%E ", er[or ][ow][oj]);
-		fprintf(FilePointew, "%E ", ew[or ][ow][oj]);
-		fprintf(FilePointej, "%E ", ej[or ][ow][oj]);
-		fprintf(FilePointhr, "%E ", hr[or ][ow][oj]);
-		fprintf(FilePointhw, "%E ", hw[or ][ow][oj]);
-		fprintf(FilePointhj, "%E ", hj[or ][ow][oj]);
+
+		time(&nowTime);
+		if (nowTime > lastTime)
+		{
+			currentSimulatedTime = dt * (double)iteration;
+			//仿真时间模拟已经进行：
+			system("cls");
+			//time(&nowTime);
+			usedsec = nowTime - startTime;
+			usesec = (int)(((double)(nowTime - startTime)) * (maximumIteration - iteration) / (iteration + 1));
+			allusesec = (int)(((double)(nowTime - startTime)) * (maximumIteration) / (iteration + 1));
+			//打印到标准输出迭代号码和当前模拟时间：
+			cout << iteration << " / " << maximumIteration << " " << currentSimulatedTime << "sec " << endl;
+			cout << "use:" << usedsec / 3600 << "h " << (usedsec % 3600) / 60 << "m " << usedsec % 60 << "s   ";
+
+			cout << "need:  " << usesec / 3600 << "h " << (usesec % 3600) / 60 << "m " << usesec % 60 << "s   ";
+			cout << "all:  " << allusesec / 3600 << "h " << (allusesec % 3600) / 60 << "m " << allusesec % 60 << "s " << endl;
+
+			cout << "speed:" << ((double)rb * wb * jb * iteration) / (nowTime - startTime) / 1.0e6 << " Mceil/s" << endl;
+			lastTime = nowTime;
+			/*	for (int k = 0; k < jb; k += 4)
+			{
+			for (int j = 0; j < wb; j += 4)
+			{
+			cout << er[or +j*rb + k*rb*wb] << " ";
+			}
+			cout << endl;
+			}*/
+		}
+
+		if (!(iteration % samplingPoint))
+		{
+			for (int oo = 0; oo < on; oo++)
+			{
+				for (int r = 0; r < re; r++)
+				{
+					FileStream[oo] << er[r][ow[oo]][oj[oo]] << " " << ew[r][ow[oo]][oj[oo]] << " " << ej[r][ow[oo]][oj[oo]] << " " << hr[r][ow[oo]][oj[oo]] << " " << hw[r][ow[oo]][oj[oo]] << " " << hj[r][ow[oo]][oj[oo]] << " ";
+				}
+				FileStream[oo] << endl;
+			}
+		}
 	}//结束主循环
 
 
 	/////////////////////////////////////////////////////////////////////////////
 	//关闭这个模拟的viz文件：
-	fclose(FilePointer);
-
-	cout << "all simulater ok" << endl;
-//	cin.get();
-}// end main    
+	for (int rr = 0; rr < on; rr++)
+		FileStream[rr].close();
+	cout << "all ok" << endl;
+	//	cin.get();
+}// end main
 

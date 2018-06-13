@@ -86,11 +86,11 @@ __global__ void EKernel2(float *er, float*ew, float*ej, const float*hr, const fl
 	const int iz_1 = x + y*rb + (z - 1)*rb*wb;
 	const int izje = x + y*rb + (jb - 2)*rb*wb;
 
-	if ((x < rb - 1) && (y == 0) && (z > 0) && (z < jb))
+	if ((x < rb - 1) && (y == 0) &&  (z < jb))
 	{
 		er[i] = ca[x] * er[i] + (sin(dw / 2)*dj / (2 * M_PI*(1 - cos(dw / 2))*(EARTH_RD + (x + 0.5)*dr)))*cb[x] * sumnum[x];
 	}
-	if ((x < rb - 1) && (y == wb - 1) && (z > 0) && (z < jb))
+	if ((x < rb - 1) && (y == wb - 1) &&  (z < jb))
 	{
 		er[i] = ca[x] * er[i] - (sin(dw / 2)*dj / (2 * M_PI*(1 - cos(dw / 2))*(EARTH_RD + (x + 0.5)*dr)))*cb[x] * sumnum[x + rb];
 	}

@@ -10,7 +10,7 @@
 #include "targetver.h"
 
 #include <stdio.h>
-#include <tchar.h>  
+#include <tchar.h>
 #include <float.h>
 #include <malloc.h>
 #include <iostream>
@@ -22,7 +22,7 @@
 #define PLOT_MODULUS 20
 //程序将每PLOT_MODULUS时间步输出3D数据，除了最后一次迭代计算，总是输出。
 //因此，如果MAXIMUM_ITERATION不是PLOT_MODULUS的整数倍，则最后一个时间步输出将比隔开先前输出的时间间隔更短。
-#define FREQUENCY 50.0   
+#define FREQUENCY 50.0
 //计算频率（Hz）
 #define EARTH_RD 6370.0e3
 //（m）
@@ -32,11 +32,11 @@
 #define RE 25
 #define WE 60
 #define JE 120
-#define TOTALSIMULATERTIME 2.0
+#define TOTALSIMULATERTIME 4.0
 //物理常数
-#define LIGHT_SPEED 299792458.0       
+#define LIGHT_SPEED 299792458.0
 // 真空中的光速（m/s）
-#define LIGHT_SPEED_SQUARED 89875517873681764.0      
+#define LIGHT_SPEED_SQUARED 89875517873681764.0
 // m^2/s^2
 #define MU_0 1.2566370614359172953850573533118011536788677597500423283899778369231265625144835994512139301368468271e-6
 // 真空中磁导率（H/m）
