@@ -125,7 +125,7 @@ int main()
 				}
 				for (k = 0; k < jb; k++)
 				{
-					er[i][j][k] = c1 * er[i][j][k] + (sin(dw / 2) * dw / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
+					er[i][j][k] = c1 * er[i][j][k] + (sin(dw / 2) * dj / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
 				}
 			}
 		}
@@ -141,7 +141,7 @@ int main()
 				}
 				for (k = 0; k < jb; k++)
 				{
-					er[i][j][k] = c1 * er[i][j][k] - (sin(dw / 2) * dw / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
+					er[i][j][k] = c1 * er[i][j][k] - (sin(dw / 2) * dj / (2 * M_PI * (1 - cos(dw / 2)) * (EARTH_RD + (i1[i][j][k] + 0.5) * dr))) * c2 * sumnum;
 				}
 			}
 		}
