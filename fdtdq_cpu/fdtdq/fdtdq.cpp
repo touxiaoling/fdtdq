@@ -132,12 +132,12 @@ int main()
 
 		for (i = 0; i < (re); i++)
 		{
-			j = we-1;
+			j = we;
 			{
 				double sumnum = 0;
 				for (k = 0; k < jb-1; k++)
 				{
-					sumnum += hj[i][j][k];
+					sumnum += hj[i][j-1][k];
 				}
 				for (k = 0; k < jb; k++)
 				{
@@ -160,7 +160,7 @@ int main()
 		{
 			for (j = 1; j<(we); j++)
 			{
-				for (k = 1; k<(jb); k++)
+				for (k = 1; k<(je); k++)
 				{
 					er[i][j][k] = c1*er[i][j][k] + c2 / (((i1[i][j][k] + 0.5)*dr + EARTH_RD)*sin(i2[i][j][k] * dw))*(sin((i2[i][j][k] + 0.5)*dw)*hj[i][j][k] / dw - sin((i2[i][j][k] - 0.5)*dw)*hj[i][j - 1][k] / dw - (hw[i][j][k] - hw[i][j][k - 1]) / dj);
 				}
@@ -168,11 +168,21 @@ int main()
 		}
 
 		//更新ew值：
+		for (i = 1; i < (re); i++)
+		{
+			for (j = 0; j < (we); j++)
+			{
+				k = 0;
+				{
+					ew[i][j][k] = c1 * ew[i][j][k] + c2 / (((i1[i][j][k]) * dr + EARTH_RD)) * ((hr[i][j][k] - hr[i][j][k - 1]) / (sin((i2[i][j][k] + 0.5) * dw) * dj) - (i1[i][j][k] + 0.5 + EARTH_RD / dr) * hj[i][j][k] + (i1[i][j][k] - 0.5 + EARTH_RD / dr) * hj[i - 1][j][k]);
+				}
+			}
+		}
 		for (i = 1; i<(re); i++)
 		{
 			for (j = 0; j<(we); j++)
 			{
-				for (k = 1; k<(jb); k++)
+				for (k = 1; k<(je); k++)
 				{
 					ew[i][j][k] = c1*ew[i][j][k] + c2 / (((i1[i][j][k])*dr + EARTH_RD))*((hr[i][j][k] - hr[i][j][k-1])/ (sin((i2[i][j][k] + 0.5)*dw)*dj) - (i1[i][j][k] + 0.5 + EARTH_RD / dr)*hj[i][j][k] + (i1[i][j][k] - 0.5 + EARTH_RD / dr)*hj[i-1][j][k]);
 				}
@@ -236,22 +246,13 @@ int main()
 		{
 			for (j = 0; j<we; j++)
 			{
-				for (k = 0; k<je; k++)
+				for (k = 0; k<jb; k++)
 				{
 
 					hj[i][j][k] = c3*hj[i][j][k] - c4 / (((i1[i][j][k] + 0.5)*dr + EARTH_RD))*(((i1[i][j][k] + 1 + EARTH_RD / dr)*ew[i+1][j][k] - (i1[i][j][k] + EARTH_RD / dr)*ew[i][j][k]) - (er[i][j+1][k] - er[i][j][k]) / dw);
 				}
 			}
 		}
-		//周期边界条件
-		for (i = 0; i<rb; i++)
-		{
-			for (j = 0; j<wb; j ++)
-			{
-				hj[i][j][je] = hr[i][j][1];
-			}
-		}
-
 		time(&nowTime);
 		if (nowTime > lastTime)
 		{
