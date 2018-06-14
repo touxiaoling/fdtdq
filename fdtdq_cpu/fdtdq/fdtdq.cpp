@@ -119,7 +119,7 @@ int main()
 			j = 0;
 			{
 				double sumnum = 0;
-				for (k = 1; k < jb; k++)
+				for (k = 0; k < jb-1; k++)
 				{
 					sumnum += hj[i][j][k];
 				}
@@ -132,10 +132,10 @@ int main()
 
 		for (i = 0; i < (re); i++)
 		{
-			j = we;
+			j = we-1;
 			{
 				double sumnum = 0;
-				for (k = 1; k < jb; k++)
+				for (k = 0; k < jb-1; k++)
 				{
 					sumnum += hj[i][j][k];
 				}
@@ -293,7 +293,6 @@ int main()
 			}
 		}
 	}//结束主循环
-
 
 	/////////////////////////////////////////////////////////////////////////////
 	//关闭这个模拟的viz文件：
