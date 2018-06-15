@@ -29,11 +29,9 @@ int setnsize(int*n, double width, double lambda_25)
 	}
 	return 0;
 }
-double electric(int N)
+double electric(int N, double dt)
 {
-	double dr = EARTH_HD / RE;
-	double dt = dr / (2 * LIGHT_SPEED);
-	double rtau = 0.3 / FREQUENCY;
-	double tau = rtau / dt;
-	return (double)(1000 * exp(-(N - 3 * tau)*(N - 3 * tau) / tau / tau));
+	float rtau = 0.3 / 20; //频率
+	float tau = rtau / dt;
+	return (1000 * exp(-(N - 3 * tau) * (N - 3 * tau) / tau / tau));
 }

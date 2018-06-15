@@ -162,7 +162,7 @@ int main()
 			{
 				for (k = 1; k<(je); k++)
 				{
-					er[i][j][k] = c1*er[i][j][k] + c2 / (((i1[i][j][k] + 0.5)*dr + EARTH_RD)*sin(i2[i][j][k] * dw))*(sin((i2[i][j][k] + 0.5)*dw)*hj[i][j][k] / dw - sin((i2[i][j][k] - 0.5)*dw)*hj[i][j - 1][k] / dw - (hw[i][j][k] - hw[i][j][k - 1]) / dj);
+					er[i][j][k] = c1 * er[i][j][k] + c2 / (((i1[i][j][k] + 0.5) * dr + EARTH_RD) * sin(i2[i][j][k] * dw)) * (sin((i2[i][j][k] + 0.5) * dw) * hj[i][j][k] / dw - sin((i2[i][j][k] - 0.5) * dw) * hj[i][j - 1][k] / dw - (hw[i][j][k] - hw[i][j][k - 1]) / dj);
 				}
 			}
 		}
@@ -174,7 +174,7 @@ int main()
 			{
 				k = 0;
 				{
-					ew[i][j][k] = c1 * ew[i][j][k] + c2 / (((i1[i][j][k]) * dr + EARTH_RD)) * ((hr[i][j][k] - hr[i][j][k - 1]) / (sin((i2[i][j][k] + 0.5) * dw) * dj) - (i1[i][j][k] + 0.5 + EARTH_RD / dr) * hj[i][j][k] + (i1[i][j][k] - 0.5 + EARTH_RD / dr) * hj[i - 1][j][k]);
+					ew[i][j][k] = c1 * ew[i][j][k] + c2 / (((i1[i][j][k]) * dr + EARTH_RD)) * ((hr[i][j][k] - hr[i][j][je-1]) / (sin((i2[i][j][k] + 0.5) * dw) * dj) - (i1[i][j][k] + 0.5 + EARTH_RD / dr) * hj[i][j][k] + (i1[i][j][k] - 0.5 + EARTH_RD / dr) * hj[i - 1][j][k]);
 				}
 			}
 		}
@@ -213,7 +213,7 @@ int main()
 
 		/////////////////////////////////////////////////////////////////////////
 		//计算激励
-		er[sr][sw][sj] +=(electric(iteration + 1) - electric(iteration))*dt / (EPSILON_0*EPSILON_R) / (sin(sw*dw)*dw*(EARTH_RD + sr*dr)*dj*(EARTH_RD + sr*dr)*dw*dr);
+		er[sr][sw][sj] +=-(electric(iteration + 1,dt) - electric(iteration,dt))*dt / (EPSILON_0*EPSILON_R) / (sin(sw*dw)*dw*(EARTH_RD + sr*dr)*dj*(EARTH_RD + sr*dr)*dw*dr);
 		//cout<< er[sr][sw][sj]<<endl;
 		//更新hr值：
 		for (i = 1; i<re; i++)
