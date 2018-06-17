@@ -260,10 +260,14 @@ int main()
 	}
 	//knee
 #ifdef KNEE
-	for (int h = 0; h < 100; h++)
+	for (int h = 0; h <= 55; h++)
 	{
-		sigma[h] = 5.6e-10*exp((h*1e3 - 45e3) / 2.9e3) + 5.6e-10*exp((h*1e3 - 45e3) / 8.3e3);
+		sigma[h] = 5.6e-10*exp((h - 55) / 8.3) ;
 
+	}
+	else
+	{
+		sigma[h] = 5.6e-10*exp((h - 55) / 2.9);
 	}
 #elif AVG
 	for (int i = 0; i < 100; i++)
