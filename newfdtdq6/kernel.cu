@@ -230,7 +230,7 @@ int main()
 	const dim3 blockSize(TX, TY, TZ);
 	const dim3 gridSize(divUp(rb, TX), divUp(wb, TY), divUp(jb, TZ));
 
-
+	//udaSetDevice(0);//当有多块GPU时默认使用第0块
 	cudaMallocManaged(&er, rb*wb*jb * sizeof(float));
 	cudaMallocManaged(&ew, rb*wb*jb * sizeof(float));
 	cudaMallocManaged(&ej, rb*wb*jb * sizeof(float));
@@ -260,15 +260,14 @@ int main()
 	}
 	//knee
 #ifdef KNEE
-	for (int h = 0; h <= 55; h++)
+	for (int h = 0; h < 100; h++)
 	{
-		sigma[h] = 5.6e-10*exp((h - 55) / 8.3) ;
+		if(h<=55)
+			sigma[h] = 5.6e-10*exp((h - 55) / 8.3) ;
+		else
+			igma[h] = 5.6e-10*exp((h - 55) / 2.9);
+	}
 
-	}
-	else
-	{
-		sigma[h] = 5.6e-10*exp((h - 55) / 2.9);
-	}
 #elif AVG
 	for (int i = 0; i < 100; i++)
 	{
