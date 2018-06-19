@@ -263,9 +263,9 @@ int main()
 	for (int h = 0; h < 100; h++)
 	{
 		if(h<=55)
-			sigma[h] = 5.6e-10*exp((h - 55) / 8.3) ;
+			sigma[h] = 5.6e-10*exp((h - 55) / 8.3);
 		else
-			igma[h] = 5.6e-10*exp((h - 55) / 2.9);
+			sigma[h] = 5.6e-10*exp((h - 55) / 2.9);
 	}
 
 #elif AVG
